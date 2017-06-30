@@ -3,12 +3,14 @@ import extract
 import transform
 import load
 
-def crawl_friends(user, ignore=[]):
+def crawl_friends(user, ignore=None):
     """Recursively crawl lastfm friends
 
     Args:
         user (str): lastfm user to crawl for friends
     """
+    ignore = ignore or [] # safe default
+
     user = extract.get_user_info(user)
     user = transform.transform_user_info(user)
     load.load_user_info(user)

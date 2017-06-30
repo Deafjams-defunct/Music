@@ -29,9 +29,7 @@ def load_user_friend(user, friend):
         end_node=friend_node,
         bidirectional=True
     )
-    
-    print(user)
-    
+
     if relationship is None:
         relationship = py2neo.Relationship(user_node, 'FRIENDS', friend_node)
         GRAPH.create(relationship)
