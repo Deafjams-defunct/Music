@@ -32,3 +32,36 @@ def transform_user_friends(friends):
     """
     friends = friends['friends']['user']
     return [transform_user_info(friend) for friend in friends]
+
+
+def transform_artist(artist):
+    """Converts lastfm api artist data into neo4j friendly user data
+
+    Args:
+        artist (dict): lastfm api artist data
+
+    Returns:
+        dict - neo4j friendly artist data
+    """
+    artist.pop('@attr', None)
+
+    return artist
+
+
+def transform_user_weekly_artist_chart(chart):
+    """Converts lastfm api weekly artist chart data into neo4j friendly
+    weekly artist chart data
+
+    Args:
+        chart (dict): lastfm api weekly artist chart
+
+    Returns:
+        list - neo4j friendly artist data
+    """
+    chart = chart['weeklyartistchart']
+    artists = []
+
+    for artist in chart['artists']:
+        artists.append(transform_artist(artist))
+
+    return artists

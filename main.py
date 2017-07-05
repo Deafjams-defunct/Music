@@ -18,7 +18,7 @@ def crawl_friends(user, ignore=None):
 
     friends = extract.get_user_friends(user['name'])
     friends = transform.transform_user_friends(friends)
-    load.load_user_friends(user['name'], friends)
+    load.load_friendships(user['name'], friends)
 
     for friend in friends:
         if friend['name'] not in ignore:
