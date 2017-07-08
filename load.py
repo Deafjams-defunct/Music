@@ -77,7 +77,7 @@ def load_plays(user, artist, playcount):
     )
 
     if plays is None:
-        plays = py2neo.Relationship(user_node, 'PLAYS', artist_node, {'plays': playcount})
+        plays = py2neo.Relationship(user_node, 'PLAYS', artist_node, **{'plays': playcount})
         GRAPH.create(plays)
 
     else:

@@ -61,7 +61,7 @@ def transform_user_weekly_artist_chart(chart):
     chart = chart['weeklyartistchart']
     artists = []
 
-    for artist in chart['artists']:
+    for artist in chart['artist']:
         artists.append(transform_artist(artist))
 
     return artists
