@@ -9,10 +9,8 @@ def load_user_info(user):
     Args:
         user (dict): lastfm user
     """
-    user_node = GRAPH.find_one('User', property_key='name', property_value=user['name'])
-    if user_node is None:
-        user_node = py2neo.Node('User', **user)
-        GRAPH.create(user_node)
+    user_node = py2neo.Node('User', **user)
+    GRAPH.merge(user_node, *('name',))
 
 
 def load_friendship(user, friend):
@@ -22,18 +20,12 @@ def load_friendship(user, friend):
         user (str): lastfm user name
         friend (str): lastfm user name
     """
-    user_node = GRAPH.find_one('User', property_key='name', property_value=user)
-    friend_node = GRAPH.find_one('User', property_key='name', property_value=friend)
-    friendship = GRAPH.match_one(
-        start_node=user_node,
-        rel_type='FRIENDS',
-        end_node=friend_node,
-        bidirectional=True
+    friendship = py2neo.Relationship(
+        py2neo.Node('User', **{'name': user}),
+        'FRIENDS',
+        py2neo.Node('User', **{'name': friend})
     )
-
-    if friendship is None:
-        friendship = py2neo.Relationship(user_node, 'FRIENDS', friend_node)
-        GRAPH.create(friendship)
+    GRAPH.merge(friendship)
 
 
 def load_friendships(user, friends):
@@ -54,11 +46,8 @@ def load_artist(artist):
     Args:
         artist (dict): lastfm artist
     """
-    artist_node = GRAPH.find_one('Artist', property_key='url', property_value=artist['url'])
-
-    if artist_node is None:
-        artist_node = py2neo.Node('Artist', **artist)
-        GRAPH.create(artist_node)
+    artist_node = py2neo.Node('Artist', **artist)
+    GRAPH.merge(artist_node, *('url',))
 
 
 def load_plays(user, artist, playcount):
